@@ -28,17 +28,7 @@ class SaverTest < Test::Unit::TestCase
         assert_equal @twitter_account_size+1, TwitterAccount.all.size
       end
     end
-    context "when saving a call" do
-      setup do
-        @call_size = Call.all.size
-        @call = Factory.build(:call)
-        @saver.save(@call, &CALL_SAVE)        
-      end
-    
-      should "allow the call to be saved" do
-        assert_equal @call_size+1, Call.all.size
-      end
-    end
+  
     context "when saving a relationship" do
       setup do
         @twitter_relationship_size = TwitterRelationship.all.size
@@ -92,17 +82,8 @@ class SaverTest < Test::Unit::TestCase
         assert_contains TwitterAccount.find_by_screen_name(@twitter_account.screen_name).tag_list, @rules["tags"]["tag"]            
       end
     end
-    context "when saving a call" do
-      setup do
-        @call = Factory.build(:call)
-        @saver.save(@call, &CALL_SAVE)     
-      end
-    
-      should "allow the call to be tagged" do
-        assert_contains Call.find_by_query(@call.query).tag_list, @rules["tags"]["tag"]           
-      end
-    end
-    context "when saving a relationship" do
+ 
+     context "when saving a relationship" do
       setup do
         @friend = Pork::TwitterUser.new(:db_object => Factory.create(:twitter_account))
         @follower = Pork::TwitterUser.new(:db_object => Factory.create(:twitter_account))
