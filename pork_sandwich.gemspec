@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{pork_sandwich}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sam Gilbert", "Evan Burchard"]
@@ -21,16 +21,16 @@ Gem::Specification.new do |s|
      "VERSION",
      "generators/pork_sandwich_migration/pork_sandwich_migration_generator.rb",
      "generators/pork_sandwich_migration/templates/pork_sandwich_migration.rb",
-     "lib/pork.rb",
-     "lib/pork/auth.rb",
-     "lib/pork/config.rb",
-     "lib/pork/crawler.rb",
-     "lib/pork/log.rb",
-     "lib/pork/puller.rb",
-     "lib/pork/reaction_processor.rb",
-     "lib/pork/saver.rb",
-     "lib/pork/search.rb",
-     "lib/pork/twitter_user.rb"
+     "lib/pork_sandwich.rb",
+     "lib/pork_sandwich/auth.rb",
+     "lib/pork_sandwich/config.rb",
+     "lib/pork_sandwich/crawler.rb",
+     "lib/pork_sandwich/log.rb",
+     "lib/pork_sandwich/puller.rb",
+     "lib/pork_sandwich/reaction_processor.rb",
+     "lib/pork_sandwich/saver.rb",
+     "lib/pork_sandwich/search.rb",
+     "lib/pork_sandwich/twitter_user.rb"
   ]
   s.homepage = %q{http://github.com/sam1vp/pork_sandwich}
   s.rdoc_options = ["--charset=UTF-8"]
