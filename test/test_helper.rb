@@ -4,8 +4,6 @@ require 'fakeweb'
 require 'shoulda'
 require 'factory_girl'
 require "#{File.dirname(__FILE__)}/schema"
-require 'active_record'
-require 'acts-as-taggable-on'
 require 'twitter'
 require "#{File.dirname(__FILE__)}/fakewebs"
 require 'rr'

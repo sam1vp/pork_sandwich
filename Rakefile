@@ -3,6 +3,7 @@ require 'active_record'
 require 'rcov'
 require 'metric_fu'
 require 'acts-as-taggable-on'
+require 'twitter'
 
 task :default => :test
 

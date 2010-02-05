@@ -7,16 +7,16 @@ class SaverTest < Test::Unit::TestCase
       $LOG = Logger.new(STDOUT)
       $LOG.level = Logger::INFO
     end
-    context "when saving a unique tweet" do
-      setup do
-        @tweet_size = Tweet.all.size
-        @tweet = Factory.build(:tweet)
-        @saver.save(@tweet, &TWEET_SAVE)
-      end
-      should "allow the tweet to be saved" do
-          assert_equal @tweet_size+1, Tweet.all.size
-      end
-    end
+    # context "when saving a unique tweet" do
+    #   setup do
+    #     @tweet_size = Tweet.all.size
+    #     @tweet = Factory.build(:tweet)
+    #     @saver.save(@tweet, &TWEET_SAVE)
+    #   end
+    #   should "allow the tweet to be saved" do
+    #       assert_equal @tweet_size+1, Tweet.all.size
+    #   end
+    # end
     context "when saving a unique user" do
       setup do
         @twitter_account_size = TwitterAccount.all.size
@@ -61,16 +61,16 @@ class SaverTest < Test::Unit::TestCase
       @rules = {:check_validation => false, :create_relationships => false, :language_detect => false, "tags" => {"tag" => "tag1"}}
       @saver = Pork::Saver.new(rules = @rules)
     end
-    context "when saving a unique tweet" do
-      setup do
-        @tweet = Factory.build(:tweet)
-        @saver.save(@tweet, &TWEET_SAVE)
-      end
-      
-      should "have the tag soved on the tweet" do
-        assert_contains Tweet.find_by_status_id(@tweet.status_id).tag_list, @rules["tags"]["tag"]        
-      end
-    end
+  #   context "when saving a unique tweet" do
+  #     setup do
+  #       @tweet = Factory.build(:tweet)
+  #       @saver.save(@tweet, &TWEET_SAVE)
+  #     end
+  #     
+  #     should "have the tag soved on the tweet" do
+  #       assert_contains Tweet.find_by_status_id(@tweet.status_id).tag_list, @rules["tags"]["tag"]        
+  #     end
+  #   end
 
     context "when saving a unique user" do
       setup do

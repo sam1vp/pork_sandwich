@@ -16,9 +16,7 @@ require "#{File.dirname(__FILE__)}/pork/table_classes/twitter_relationship"
 
 module Pork 
   #Object.send :undef_method, :id
-  
-  require 'acts-as-taggable-on'
-  require 'twitter'
+
   
   ActiveRecord::Base.send :include, ActiveRecord::Acts::TaggableOn
   ActiveRecord::Base.send :include, ActiveRecord::Acts::Tagger
