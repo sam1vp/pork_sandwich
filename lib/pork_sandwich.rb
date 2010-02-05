@@ -15,6 +15,7 @@ require "#{File.dirname(__FILE__)}/pork_sandwich/table_classes/twitter_account"
 require "#{File.dirname(__FILE__)}/pork_sandwich/table_classes/twitter_relationship"
 
 module Pork 
+  require 'twitter'
   #Object.send :undef_method, :id
 
   
