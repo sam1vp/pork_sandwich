@@ -72,6 +72,8 @@ begin
     gemspec.files = FileList['lib/pork/*.rb', 'lib/pork.rb', 'lib/table_classes/*.rb', 'generators/pork_sandwich_migration/*.rb', 'generators/pork_sandwich_migration/templates/*.rb', 'Rakefile', 'README', 'VERSION' ]
     gemspec.test_files = ['test/*.rb']
   end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
+
 end
