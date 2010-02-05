@@ -23,11 +23,11 @@ TWEET_SAVE = lambda do |tweet_to_save, rules|
   $LOG.debug "TWEET SAVE"
   tweet = Tweet.new(:text => tweet_to_save.text, 
                    :time_of_tweet => tweet_to_save.created_at,
-                   :to_user_id_search => tweet_to_save.to_user_id_search,
+                   :to_user_id_search => tweet_to_save.to_user_id,
                    :iso_language_code => tweet_to_save.iso_language_code,
                    :source => tweet_to_save.source,
                    :profile_image_url => tweet_to_save.profile_image_url,
-                   :from_user_id_search => tweet_to_save.from_user_id_search,     
+                   :from_user_id_search => tweet_to_save.from_user_id,     
                    :to_user => tweet_to_save.to_user,
                    :from_user  => tweet_to_save.from_user,
                    :status_id  => tweet_to_save.status_id
