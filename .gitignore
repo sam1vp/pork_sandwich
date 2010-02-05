@@ -2,6 +2,7 @@
 funrun.rb
 funrun.yml
 coverage/
+config/
 config/database.yml
 config/pork_config.yml
 tmp/

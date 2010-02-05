@@ -3,6 +3,7 @@ require 'active_record'
 require 'rcov'
 require 'metric_fu'
 require 'acts-as-taggable-on'
+require 'twitter'
 
 task :default => :test
 
@@ -17,15 +18,6 @@ task :migrate => :connect do
   ActiveRecord::Migrator.migrate('db/migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
 end
 
-desc "Seed starting data into the database"
-task :seed => :environment do 
-  reaction_types = ['retweet', 'mention', 'reply']
-  reaction_types.each do |r|
-    unless Reaction.find_by_reaction_type(r)
-      Reaction.create(:reaction_type => r)
-    end
-  end  
-end
 
 desc "Loads the database environment"
 task :environment => :connect do 
@@ -40,16 +32,6 @@ task :connect do
   ActiveRecord::Base.logger = Logger.new(File.open('database.log', 'a'))
   
 end
-
-# this requires the RCOV gem to be installed on your system
-
-desc "Generate code coverage with rcov"
-task :rcov do
-  rcov = %(rcov --text-summary -Ilib test/*_test.rb)
-  system rcov
-  system "open doc/coverage/index.html" if PLATFORM['darwin']
-end
-
 
 MetricFu::Configuration.run do |config|
   #define which metrics you want to use
