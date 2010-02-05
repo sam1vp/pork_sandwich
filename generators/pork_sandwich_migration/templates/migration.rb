@@ -1,5 +1,5 @@
 class PorkSandwichMigration < ActiveRecord::Migration
-  self.up
+  def self.up
     create_table :twitter_accounts do |t|
       t.integer :twitter_id, :limit => 8
       t.integer :twitter_id_for_search, :limit => 8
@@ -99,30 +99,32 @@ class PorkSandwichMigration < ActiveRecord::Migration
       t.timestamps            
     end
 
-
-    execute "alter table tweets " +  
-    "alter column time_of_tweet type timestamp with time zone;"
-    execute "alter table tweets " +  
-    "alter column created_at type timestamp with time zone;"
-    execute "alter table tweets " +  
-    "alter column updated_at type timestamp with time zone;"  
-    execute "alter table twitter_accounts " +  
-    "alter column time_of_user_creation type timestamp with time zone;"
-    execute "alter table twitter_accounts " +  
-    "alter column created_at type timestamp with time zone;"
-    execute "alter table twitter_accounts " +  
-    "alter column updated_at type timestamp with time zone;"  
-    execute "alter table taggings " +  
+    begin
+      execute "alter table tweets " +  
+      "alter column time_of_tweet type timestamp with time zone;"
+      execute "alter table tweets " +  
       "alter column created_at type timestamp with time zone;"
-    execute "alter table trends " +  
-    "alter column created_at type timestamp with time zone;"
-    execute "alter table trends " +  
-    "alter column updated_at type timestamp with time zone;"
-    execute "alter table tweet_reactions " +  
-    "alter column created_at type timestamp with time zone;"
-    execute "alter table tweet_reactions " +  
-    "alter column updated_at type timestamp with time zone;"
-    
+      execute "alter table tweets " +  
+      "alter column updated_at type timestamp with time zone;"  
+      execute "alter table twitter_accounts " +  
+      "alter column time_of_user_creation type timestamp with time zone;"
+      execute "alter table twitter_accounts " +  
+      "alter column created_at type timestamp with time zone;"
+      execute "alter table twitter_accounts " +  
+      "alter column updated_at type timestamp with time zone;"  
+      execute "alter table taggings " +  
+        "alter column created_at type timestamp with time zone;"
+      execute "alter table trends " +  
+      "alter column created_at type timestamp with time zone;"
+      execute "alter table trends " +  
+      "alter column updated_at type timestamp with time zone;"
+      execute "alter table tweet_reactions " +  
+      "alter column created_at type timestamp with time zone;"
+      execute "alter table tweet_reactions " +  
+      "alter column updated_at type timestamp with time zone;"
+    rescue SQLException => e
+      puts e + "\n" + "Migration failed to change timestamp column data types pork_sandwich tables. Attempted to change all timestamp without time zone types to timestamp with time zone types. Tables will still properly process and store time zone data for timestamps, but will not export UTC offset on COPY to." 
+    end
   reaction_types = ['retweet', 'mention', 'reply']
   reaction_types.each do |r|
     unless Reaction.find_by_reaction_type(r)
