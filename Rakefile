@@ -76,3 +76,18 @@ MetricFu::Configuration.run do |config|
                                      "--profile"]}
 end
 
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "pork_sandwich"
+    gemspec.summary = "A tool for pulling and storing delicious, delicious Twitter data"
+    gemspec.description = "Ideal for pulling Twitter search tweets, tweets from a twitter account, twitter account info, twitter relationship data, and trends. All data is stored in a handy schema for easy access."
+    gemspec.email = "sam.o.gilbert@gmail.com"
+    gemspec.homepage = "http://github.com/sam1vp/pork_sandwich"
+    gemspec.authors = ["Sam Gilbert", "Evan Burchard"]
+    gemspec.add_dependency('acts-as-taggable-on', '>= 1.0.12')
+    gemspec.add_dependency('twitter', '>= 0.7.9')
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
+end
