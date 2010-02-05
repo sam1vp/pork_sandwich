@@ -122,6 +122,14 @@ class PorkSandwichMigration < ActiveRecord::Migration
     "alter column created_at type timestamp with time zone;"
     execute "alter table tweet_reactions " +  
     "alter column updated_at type timestamp with time zone;"
+    
+  reaction_types = ['retweet', 'mention', 'reply']
+  reaction_types.each do |r|
+    unless Reaction.find_by_reaction_type(r)
+      Reaction.create(:reaction_type => r)
+    end
+  end  
+    
   end
 
   def self.down
