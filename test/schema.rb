@@ -17,6 +17,9 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string :screen_name
     t.string :name 
     t.string :location
+
+    t.datetime :time_of_user_creation #need timezone
+    
     t.text :description
     t.string :profile_image_url
     t.string :url
@@ -28,7 +31,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string :profile_sidebar_fill_color
     t.string :profile_sidebar_border_color
     t.integer :friends_count
-    t.datetime :time_of_user_creation
     t.integer :favourites_count
     t.integer :utc_offset
     t.string :time_zone
@@ -42,7 +44,7 @@ ActiveRecord::Schema.define(:version => 0) do
   
   create_table :tweets do |t|
     t.string :text, :null => false
-    t.datetime :time_of_tweet
+    t.datetime :time_of_tweet #need timestamp
     t.string :from_user, :null => false
     t.integer :to_user_id
     t.integer :to_user_id_search
@@ -58,44 +60,8 @@ ActiveRecord::Schema.define(:version => 0) do
     t.timestamps
   end
 
-  create_table :apis do  |t|
-    t.string :domain
-    t.string :name
-    t.text :description
-    t.string :documentation_url
-    
-    t.string :username
-    t.string :password
-    t.timestamps
-  end
-
-  create_table :calls do  |t|
-    t.text :query
-    t.float :completed_in
-  
-    t.integer :since_id, :limit => 8     
-    t.integer :max_id, :limit => 8   
-    t.string :refresh_url   
-    t.integer :results_per_page 
-    t.integer :next_page  
-    t.integer :page 
-    
-    t.integer :api_id, :limit => 8
-    t.timestamps      
-  end
-    
-  create_table :languages do  |t|
-    t.string :english_name_of_language
-    t.string :iso_639_1
-    t.string :iso_639_2
-    t.string :iso_639_2_bibliographical
-    t.string :iso_639_2_terminology
-    
-  end
-
   create_table :trends do  |t|
-    t.string :topic
-    
+    t.string :topic    
     t.timestamps
   end
 
@@ -119,31 +85,11 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer :follower_id, :null => false, :dependent => :destroy, :limit => 8
     t.integer :friend_id, :null => false, :dependent => :destroy, :limit => 8
     t.boolean :current
+    t.boolean :complete_follower_set
+    t.boolean :complete_friend_set
     t.timestamps      
   end
 
-  create_table :confidences do  |t|
-    t.integer :twitter_account_id, :dependent => :destroy, :limit => 8
-    t.integer :tweet_id, :dependent => :destroy, :limit => 8
-    t.integer :language_id, :dependent => :destroy
-    t.float :confidence
-    t.timestamps
-  end
-
-  create_table :calls_twitter_accounts, :id => false do |t|
-    t.integer :call_id, :null => false, :dependent => :destroy, :limit => 8
-    t.integer :twitter_account_id, :null => false, :dependent => :destroy, :limit => 8
-  end
-
-  create_table :calls_tweets, :id => false do |t|
-    t.integer :call_id, :null => false, :dependent => :destroy, :limit => 8
-    t.integer :tweet_id, :null => false, :dependent => :destroy, :limit => 8
-  end
-
-  create_table :calls_trends, :id => false  do |t|
-    t.integer :call_id, :null => false, :dependent => :destroy, :limit => 8
-    t.integer :trend_id, :null => false, :dependent => :destroy, :limit => 8
-  end
 
   create_table :trends_tweets, :id => false  do |t|
     t.integer :tweet_id, :null => false, :dependent => :destroy, :limit => 8
@@ -171,3 +117,6 @@ ActiveRecord::Schema.define(:version => 0) do
 
   
 end
+
+#add time zone
+#fix tweet reactions
