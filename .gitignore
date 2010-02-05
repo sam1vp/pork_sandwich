@@ -1,0 +1,9 @@
+*database.log
+funrun.rb
+funrun.yml
+coverage/
+config/database.yml
+config/pork_config.yml
+tmp/
+scratch_directory
+.DS_Store

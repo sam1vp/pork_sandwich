@@ -1,0 +1,4 @@
+config: 
+  twitter_auth:  
+    username: #username_here
+    password: #password_here
