@@ -8,3 +8,4 @@ config/pork_config.yml
 tmp/
 scratch_directory
 .DS_Store
+pkg
