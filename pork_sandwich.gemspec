@@ -30,6 +30,12 @@ Gem::Specification.new do |s|
      "lib/pork_sandwich/reaction_processor.rb",
      "lib/pork_sandwich/saver.rb",
      "lib/pork_sandwich/search.rb",
+     "lib/pork_sandwich/table_classes/reaction.rb",
+     "lib/pork_sandwich/table_classes/trend.rb",
+     "lib/pork_sandwich/table_classes/tweet.rb",
+     "lib/pork_sandwich/table_classes/tweet_reaction.rb",
+     "lib/pork_sandwich/table_classes/twitter_account.rb",
+     "lib/pork_sandwich/table_classes/twitter_relationship.rb",
      "lib/pork_sandwich/twitter_user.rb"
   ]
   s.homepage = %q{http://github.com/sam1vp/pork_sandwich}
