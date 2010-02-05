@@ -11,7 +11,7 @@ require 'rr'
 
 
 
-require "#{File.dirname(__FILE__)}/../lib/pork"
+require "#{File.dirname(__FILE__)}/../lib/pork_sandwich"
 
 class Test::Unit::TestCase
   include RR::Adapters::TestUnit
