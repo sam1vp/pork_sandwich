@@ -16,6 +16,6 @@ sudo rake gems:install
 5. script/generate pork_sandwich_migration
 
 6. rake db:migrate
-(may have to comment the seed and with timestamp stuff out in the migration.  See recommendations)
+(may have to comment the "with timestamp" stuff out in the migration.  Starts with "begin" and has a lot of execute statements in it.)
 
 Pork Classes and db Objects can now be referenced throughout your project. See below for a description of the database schema and pulling methods. Happy porking.
