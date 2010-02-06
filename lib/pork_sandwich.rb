@@ -9,12 +9,7 @@ require "#{File.dirname(__FILE__)}/pork_sandwich/search"
 
 
 module Pork 
-  require 'twitter'
   #Object.send :undef_method, :id
-
-  
-  ActiveRecord::Base.send :include, ActiveRecord::Acts::TaggableOn
-  ActiveRecord::Base.send :include, ActiveRecord::Acts::Tagger
   
 end
 
