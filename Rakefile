@@ -69,7 +69,7 @@ begin
     gemspec.authors = ["Sam Gilbert", "Evan Burchard"]
     gemspec.add_dependency('acts-as-taggable-on', '>= 1.0.12')
     gemspec.add_dependency('twitter', '>= 0.7.9')
-    gemspec.files = FileList['lib/pork_sandwich/*.rb', 'lib/pork_sandwich.rb', 'lib/pork_sandwich/table_classes/*.rb', 'generators/pork_sandwich_migration/*.rb', 'generators/pork_sandwich_migration/templates/*.rb', 'Rakefile', 'README', 'VERSION' ]
+    gemspec.files = FileList['lib/pork_sandwich/*.rb', 'lib/pork_sandwich.rb', 'lib/pork_sandwich/table_classes/*.rb', 'generators/pork_sandwich_migration/*.rb', 'generators/pork_sandwich_migration/templates/*.rb', 'generators/pork_sandwich_models/*.rb', 'generators/pork_sandwich_models/templates/*.rb', 'generators/pork_sandwich_models/templates/models/*.rb', 'Rakefile', 'README', 'VERSION' ]
     gemspec.test_files = ['test/*.rb']
   end
   Jeweler::GemcutterTasks.new
