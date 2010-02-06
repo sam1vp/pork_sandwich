@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{pork_sandwich}
-  s.version = "0.4.2"
+  s.version = "0.4.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sam Gilbert", "Evan Burchard"]
@@ -30,12 +30,6 @@ Gem::Specification.new do |s|
      "lib/pork_sandwich/reaction_processor.rb",
      "lib/pork_sandwich/saver.rb",
      "lib/pork_sandwich/search.rb",
-     "lib/pork_sandwich/table_classes/reaction.rb",
-     "lib/pork_sandwich/table_classes/trend.rb",
-     "lib/pork_sandwich/table_classes/tweet.rb",
-     "lib/pork_sandwich/table_classes/tweet_reaction.rb",
-     "lib/pork_sandwich/table_classes/twitter_account.rb",
-     "lib/pork_sandwich/table_classes/twitter_relationship.rb",
      "lib/pork_sandwich/twitter_user.rb"
   ]
   s.homepage = %q{http://github.com/sam1vp/pork_sandwich}
