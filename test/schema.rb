@@ -114,7 +114,70 @@ ActiveRecord::Schema.define(:version => 0) do
     t.boolean :current
     t.timestamps            
   end
+end
 
+class Reaction < ActiveRecord::Base
+  has_many :tweet_reactions
+end
+
+class TwitterRelationship < ActiveRecord::Base
+  acts_as_taggable_on :tags, :relationships
+  
+  belongs_to :friend, :class_name => "TwitterAccount"
+  belongs_to :follower, :class_name => "TwitterAccount"  
+end
+
+
+class TwitterAccount < ActiveRecord::Base
+  acts_as_taggable_on :tags
+  has_many :tweets
+  has_and_belongs_to_many :trends
+  
+  
+  has_many :tweet_reactions
+  
+  has_many :initiations, :foreign_key => 'initiator_id',
+                         :class_name => 'TweetReaction',
+                         :dependent => :destroy
+  has_many :initiators, :through => :initiations                       
+  
+  has_many :responses, :foreign_key => 'responder_id',
+                         :class_name => 'TweetReaction',
+                         :dependent => :destroy
+  has_many :responders, :through => :responses
+
+  has_many :friendships, :foreign_key => 'friend_id',
+                          :class_name => 'TwitterRelationship',
+                          :dependent => :destroy 
+  has_many :friends, :through => :followerships
+                          
+  has_many :followerships, :foreign_key => 'follower_id',
+                          :class_name => 'TwitterRelationship',
+                          :dependent => :destroy
+  has_many :followers, :through => :friendships     
   
 end
 
+class TweetReaction < ActiveRecord::Base
+  acts_as_taggable_on :tags
+  
+  belongs_to :tweet
+  belongs_to :initiator, :class_name => "TwitterAccount"
+  belongs_to :responder, :class_name => "TwitterAccount"  
+  belongs_to :reaction
+end
+
+class Tweet < ActiveRecord::Base
+  acts_as_taggable_on :tags
+  belongs_to :twitter_account 
+  has_and_belongs_to_many :trends  
+  
+  has_many :tweet_reactions
+  
+end
+
+class Trend < ActiveRecord::Base
+  acts_as_taggable_on :tags
+  has_and_belongs_to_many :tweets  
+  has_and_belongs_to_many :twitter_accounts  
+end
