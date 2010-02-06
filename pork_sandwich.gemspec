@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{pork_sandwich}
-  s.version = "0.4.3"
+  s.version = "0.4.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sam Gilbert", "Evan Burchard"]
-  s.date = %q{2010-02-05}
+  s.date = %q{2010-02-06}
   s.description = %q{Ideal for pulling Twitter search tweets, tweets from a twitter account, twitter account info, twitter relationship data, and trends. All data is stored in a handy schema for easy access.}
   s.email = %q{sam.o.gilbert@gmail.com}
   s.extra_rdoc_files = [
@@ -21,6 +21,13 @@ Gem::Specification.new do |s|
      "VERSION",
      "generators/pork_sandwich_migration/pork_sandwich_migration_generator.rb",
      "generators/pork_sandwich_migration/templates/migration.rb",
+     "generators/pork_sandwich_models/pork_sandwich_models_generator.rb",
+     "generators/pork_sandwich_models/templates/models/reaction.rb",
+     "generators/pork_sandwich_models/templates/models/trend.rb",
+     "generators/pork_sandwich_models/templates/models/tweet.rb",
+     "generators/pork_sandwich_models/templates/models/tweet_reaction.rb",
+     "generators/pork_sandwich_models/templates/models/twitter_account.rb",
+     "generators/pork_sandwich_models/templates/models/twitter_relationship.rb",
      "lib/pork_sandwich.rb",
      "lib/pork_sandwich/auth.rb",
      "lib/pork_sandwich/config.rb",
