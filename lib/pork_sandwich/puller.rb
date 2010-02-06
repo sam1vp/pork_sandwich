@@ -37,7 +37,7 @@ end
 
 
 ACCOUNT_INFO = lambda do |user_object, auth_object|
-  @pull_data = auth_object.user(user_object.search)  
+  @pull_data = auth_object.auth.user(user_object.search)  
   {:pull_data => @pull_data, :db_object => $SAVER.save(@pull_data, &TWITTER_ACCOUNT_SAVE)}
 end
 
@@ -50,7 +50,7 @@ FOLLOWERS = lambda do |user, auth_object|
   # end
   loop do
     rules[:cursor] = -1 if !rules[:cursor]
-    @pull_data = auth_object.followers(rules)
+    @pull_data = auth_object.auth.followers(rules)
     @pull_data.users.each do |follower_mash|
       db_user_object = $SAVER.save(follower_mash, &TWITTER_ACCOUNT_SAVE)  
       follower_relationship_db_ids << $SAVER.save({:friend => user, :follower => Pork::TwitterUser.new(:twitter_id => follower_mash.id, :twitter_screen_name => follower_mash.screen_name, :db_object => db_user_object)}, &RELATIONSHIP_SAVE).id 
@@ -69,7 +69,7 @@ FOLLOWER_IDS = lambda do |user, auth_object|
   # rules[:user_id] = user.twitter_id
   $SAVER.rules[:complete_follower_set] = true
   follower_relationship_db_ids = []
-  @pull_data = auth_object.follower_ids({:user_id => user.twitter_id})
+  @pull_data = auth_object.auth.follower_ids({:user_id => user.twitter_id})
   @pull_data.each do |user_id| 
     db_user_object = $SAVER.save(Pork::TwitterUser.new(:twitter_id => user_id), &TWITTER_ACCOUNT_SAVE)
     follower_relationship_db_ids << $SAVER.save({:friend => user, :follower => Pork::TwitterUser.new(:twitter_id => user_id, :db_object => db_user_object)}, &RELATIONSHIP_SAVE)
@@ -87,7 +87,7 @@ FRIENDS = lambda do |user, auth_object|
   # end
   loop do
     rules[:cursor] = -1 if !rules[:cursor]
-    @pull_data = auth_object.friends(rules)
+    @pull_data = auth_object.auth.friends(rules)
     @pull_data.users.each do |friend_mash|
       db_user_object = $SAVER.save(friend_mash, &TWITTER_ACCOUNT_SAVE)  
       friend_relationship_db_ids << $SAVER.save({:friend => Pork::TwitterUser.new(:twitter_id => friend_mash.id, :twitter_screen_name => friend_mash.screen_name, :db_object => db_user_object), :follower => user}, &RELATIONSHIP_SAVE).id
@@ -106,7 +106,7 @@ FRIEND_IDS = lambda do |user, auth_object|
   # rules[:user_id] = user.twitter_id
   $SAVER.rules[:complete_friend_set] = true
   friend_relationship_db_ids = []
-  @pull_data = auth_object.friend_ids({:user_id => user.twitter_id})
+  @pull_data = auth_object.auth.friend_ids({:user_id => user.twitter_id})
   @pull_data.each do |user_id| 
     db_user_object = $SAVER.save(Pork::TwitterUser.new(:twitter_id => user_id), &TWITTER_ACCOUNT_SAVE)
     friend_relationship_db_ids << $SAVER.save({:follower => user, :friend => Pork::TwitterUser.new(:twitter_id => user_id, :db_object => db_user_object)}, &RELATIONSHIP_SAVE)
@@ -123,7 +123,7 @@ TWEETS = lambda do |user, auth_object|
     rules[:screen_name] = user.screen_name
   end
   @tweet_db_ids = []
-  @pull_data = auth_object.user_timeline(rules)
+  @pull_data = auth_object.auth.user_timeline(rules)
   @pull_data.each do |result|
     @tweet_db_ids << $SAVER.save(result, &USER_TWEET_SAVE).id
   end
