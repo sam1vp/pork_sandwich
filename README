@@ -1,0 +1,21 @@
+--README--
+
+How to get started: 
+
+1. Create a new rails project
+
+2. Drop this into config/environment.rb (after the Rails::Initializer.run do |config| line, but before the "end" statement of that block)
+  config.gem "pork_sandwich", :version => ">=0.4.5"
+
+3. rake gems:install 
+or
+sudo rake gems:install
+
+4. script/generate pork_sandwich_models
+
+5. script/generate pork_sandwich_migration
+
+6. rake db:migrate
+(may have to comment the seed and with timestamp stuff out in the migration.  See recommendations)
+
+Pork Classes and db Objects can now be referenced throughout your project. See below for a description of the database schema and pulling methods. Happy porking.
