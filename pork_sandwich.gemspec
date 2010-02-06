@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{pork_sandwich}
-  s.version = "0.4.0"
+  s.version = "0.4.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sam Gilbert", "Evan Burchard"]
@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "generators/pork_sandwich_migration/pork_sandwich_migration_generator.rb",
-     "generators/pork_sandwich_migration/templates/pork_sandwich_migration.rb",
+     "generators/pork_sandwich_migration/templates/migration.rb",
      "lib/pork_sandwich.rb",
      "lib/pork_sandwich/auth.rb",
      "lib/pork_sandwich/config.rb",
