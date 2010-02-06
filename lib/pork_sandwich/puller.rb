@@ -12,19 +12,19 @@ module Pork
         pull_type.call(@user, @auth_object)
       # rescue Twitter::Unauthorized  
       rescue Twitter::Unavailable
-        $LOG.error "ERROR: Twitter unavailable, trying in 60"
+        p "ERROR: Twitter unavailable, trying in 60"
         sleep 60
         retry
       rescue Twitter::NotFound
-        $LOG.error "ERROR: Info target not found, trying to skip"
+        p "ERROR: Info target not found, trying to skip"
       # rescue Crack::ParseError
       #   raise Crack::ParseError
       rescue Errno::ETIMEDOUT
-        $LOG.error "ERROR: Puller timed out, retrying in 10"
+        p "ERROR: Puller timed out, retrying in 10"
         sleep 10
         retry
       rescue Twitter::InformTwitter
-        $LOG.error "ERROR: Twitter internal error, retrying in 30"
+        p "ERROR: Twitter internal error, retrying in 30"
         sleep 30
         retry
       end
@@ -37,7 +37,6 @@ end
 
 
 ACCOUNT_INFO = lambda do |user, auth_object|
-  $LOG.info "USER PULL"
   @pull_data = auth_object.user(user.search)  
   {:pull_data => @pull_data, :db_object => $SAVER.save(@pull_data, &TWITTER_ACCOUNT_SAVE)}
 end
@@ -117,7 +116,6 @@ FRIEND_IDS = lambda do |user, auth_object|
 end
 
 TWEETS = lambda do |user, auth_object|
-  $LOG.info "USER TWEETS PULL"
   rules = {:count => 200}
   if user.twitter_id 
     rules[:user_id] = user.twitter_id
@@ -134,7 +132,6 @@ TWEETS = lambda do |user, auth_object|
 end
 
 TRENDS_PULL = lambda do |rules, auth_object|
-  $LOG.info "TRENDS PULL"
   Twitter::Trends.current().each do |trend|
     $SAVER.save({:name => trend.name, :query => trend.query}, &TREND_SAVE)
   end

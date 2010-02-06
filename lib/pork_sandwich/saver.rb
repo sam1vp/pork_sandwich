@@ -20,7 +20,6 @@ module Pork
   end
 end
 TWEET_SAVE = lambda do |tweet_to_save, rules|
-  $LOG.debug "TWEET SAVE"
   tweet = Tweet.new(:text => tweet_to_save.text, 
                    :time_of_tweet => tweet_to_save.created_at,
                    :to_user_id_search => tweet_to_save.to_user_id,
@@ -49,7 +48,6 @@ TWEET_SAVE = lambda do |tweet_to_save, rules|
 end
 
 USER_TWEET_SAVE = lambda do |tweet_to_save, rules|
-  $LOG.debug "USER TWEET SAVE"
   tweet = Tweet.new(:text => tweet_to_save.text, 
                    :time_of_tweet => tweet_to_save.created_at,
                    :to_user_id => tweet_to_save.in_reply_to_user_id,
@@ -72,7 +70,6 @@ USER_TWEET_SAVE = lambda do |tweet_to_save, rules|
   tweet
 end
 TWITTER_ACCOUNT_SAVE = lambda do |twitter_account_to_save, rules|
-  $LOG.debug "TWITTER ACCOUNT SAVE"
   if twitter_account_to_save.class == Pork::TwitterUser
     twitter_account_attribute_hash = {:twitter_id => twitter_account_to_save.twitter_id,
                                       :screen_name => twitter_account_to_save.twitter_screen_name}
@@ -135,7 +132,6 @@ TWITTER_ACCOUNT_SAVE = lambda do |twitter_account_to_save, rules|
 
 end
 CALL_SAVE = lambda do |call_to_save, rules|
-  $LOG.debug "CALL SAVE"
   call = Call.new(:query => call_to_save.query,
                   :completed_in =>  call_to_save.completed_in,
                   :since_id => call_to_save.since_id,
@@ -155,7 +151,6 @@ CALL_SAVE = lambda do |call_to_save, rules|
 end
 
 RELATIONSHIP_SAVE = lambda do |users_to_save, rules|
-    $LOG.debug "RELATIONSHIP SAVE"
   follower = users_to_save[:follower]
   friend = users_to_save[:friend]      
 
@@ -179,9 +174,7 @@ end
 
 
 REACTION_SAVE = lambda do |reaction_to_save, rules|
-  $LOG.debug "REACTION SAVE"
-  
-  
+
   initiator = reaction_to_save[:initiator]
   responder = reaction_to_save[:responder]
   tweet = reaction_to_save[:tweet]

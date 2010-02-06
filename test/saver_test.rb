@@ -4,8 +4,6 @@ class SaverTest < Test::Unit::TestCase
   context "A default saver" do
     setup do
       @saver = Pork::Saver.new
-      $LOG = Logger.new(STDOUT)
-      $LOG.level = Logger::INFO
     end
     # context "when saving a unique tweet" do
     #   setup do

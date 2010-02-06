@@ -122,9 +122,10 @@ class PorkSandwichMigration < ActiveRecord::Migration
       "alter column created_at type timestamp with time zone;"
       execute "alter table tweet_reactions " +  
       "alter column updated_at type timestamp with time zone;"
-    rescue SQLException => e
+    rescue => e
       puts e + "\n" + "Migration failed to change timestamp column data types pork_sandwich tables. Attempted to change all timestamp without time zone types to timestamp with time zone types. Tables will still properly process and store time zone data for timestamps, but will not export UTC offset on COPY to." 
     end
+  
   reaction_types = ['retweet', 'mention', 'reply']
   reaction_types.each do |r|
     unless Reaction.find_by_reaction_type(r)

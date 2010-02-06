@@ -8,8 +8,6 @@ class PullerTest < Test::Unit::TestCase
       @user_info_keys = ["created_at", "description", "favourites_count", "followers_count", "following", "friends_count", "geo_enabled", "id", "location", "name", "notifications", "profile_background_color", "profile_background_image_url", "profile_background_tile", "profile_image_url", "profile_link_color", "profile_sidebar_border_color", "profile_sidebar_fill_color", "profile_text_color", "protected", "screen_name", "status", "statuses_count", "time_zone", "url", "utc_offset", "verified"]
       db_user_object = TwitterAccount.create({:twitter_id => 15019521,:screen_name => 'sam1vp'})
       @test_user = Pork::TwitterUser.new(:twitter_id => 15019521, :db_object => db_user_object)
-      $LOG = Logger.new(STDOUT)
-      $LOG.level = Logger::INFO
     end
   
     should "be able to be created" do

@@ -20,7 +20,7 @@ module Pork
           @tweets_pulled.each do |tweet|
             tweet.status_id = tweet.id   
             @db_ids_created << $SAVER.save(tweet, &TWEET_SAVE).id
-            $CRAWLER.append(tweet.from_user) if @collect_users
+            # $CRAWLER.append(tweet.from_user) if @collect_users
             @current_count += 1
             if reached_desired_count? 
               break
@@ -42,11 +42,11 @@ module Pork
         p "Error: JSON Parsing error, trying to skip past problem tweet"
         @search_params.query[:max_id] -= 1000
       rescue Errno::ETIMEDOUT
-        $LOG.error "ERROR: Puller timed out, retrying in 10"
+        p "ERROR: Puller timed out, retrying in 10"
         sleep 10
         retry
       rescue Twitter::InformTwitter
-        $LOG.error "ERROR: Twitter internal error, retrying in 30"
+        p "ERROR: Twitter internal error, retrying in 30"
         sleep 30
         retry
 #      rescue NoMethodError

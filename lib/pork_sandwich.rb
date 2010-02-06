@@ -10,7 +10,8 @@ require "#{File.dirname(__FILE__)}/pork_sandwich/search"
 
 module Pork 
   #Object.send :undef_method, :id
-  
+  require 'twitter'
+  $SAVER = Pork::Saver.new
 end
 
 
