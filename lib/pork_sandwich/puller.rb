@@ -36,8 +36,8 @@ end
 
 
 
-ACCOUNT_INFO = lambda do |user, auth_object|
-  @pull_data = auth_object.user(user.search)  
+ACCOUNT_INFO = lambda do |user_object, auth_object|
+  @pull_data = auth_object.user(user_object.search)  
   {:pull_data => @pull_data, :db_object => $SAVER.save(@pull_data, &TWITTER_ACCOUNT_SAVE)}
 end
 
