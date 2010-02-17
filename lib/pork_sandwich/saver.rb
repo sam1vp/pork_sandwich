@@ -154,7 +154,9 @@ RELATIONSHIP_SAVE = lambda do |users_to_save, rules|
   follower = users_to_save[:follower]
   friend = users_to_save[:friend]      
 
-  twitter_relationship = TwitterRelationship.new(:follower_id => follower.db_object.id, :friend_id => friend.db_object.id, :current => true)
+  twitter_relationship = TwitterRelationship.new(:follower_id => follower.db_object.id, 
+                                                 :friend_id => friend.db_object.id, 
+                                                 :current => true)
   if rules[:complete_friend_set]
     twitter_relationship[:complete_friend_set] = rules[:complete_friend_set]
   end

@@ -42,11 +42,11 @@ class SaverTest < Test::Unit::TestCase
     context "when saving a tweet_reaction" do
       setup do
         @tweet_reaction_size = TweetReaction.all.size
-        @tweet_reaction = Factory.build(:tweet_reaction)
-        @saver.save(@tweet_reaction, &REACTION_SAVE)        
+        @tweet_reaction = {:tweet => Factory.create(:tweet),:initiator => Factory.create(:twitter_account), :responder => Factory.create(:twitter_account), :type => 'retweet'} 
       end
     
       should "allow the reaction to be saved" do
+        @saver.save(@tweet_reaction, &REACTION_SAVE)  
         assert_equal @tweet_reaction_size+1, TweetReaction.all.size
       end
     end
@@ -94,11 +94,11 @@ class SaverTest < Test::Unit::TestCase
     end
     context "when saving a tweet_reaction" do
       setup do
-        @tweet_reaction = Factory.build(:tweet_reaction)
-        @saver.save(@tweet_reaction, &REACTION_SAVE)        
+        @tweet_reaction = {:tweet => Factory.create(:tweet),:initiator => Factory.create(:twitter_account), :responder => Factory.create(:twitter_account), :type => 'retweet'}         
       end
     
       should "allow the reaction to be tagged" do
+        @saver.save(@tweet_reaction, &REACTION_SAVE)
         assert_contains TweetReaction.last.tag_list,@rules["tags"]["tag"]          
       end
     end

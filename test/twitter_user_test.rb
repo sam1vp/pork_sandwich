@@ -33,6 +33,12 @@ class TwitterUserTest < Test::Unit::TestCase
       @user.update_account_info
       assert_equal 'Sam Gilbert', @user.user_info[:name]
       assert_equal 'sam1vp', @user.twitter_screen_name
+      assert_equal 'sam1vp', @user.db_object.screen_name
+    end
+  end
+  context "A TwitterUser with only a twitter_id" do
+    setup do 
+      @user = Pork::TwitterUser.new({:twitter_id => 15019521})
     end
     
     should "be able to pull tweets" do
@@ -59,7 +65,6 @@ class TwitterUserTest < Test::Unit::TestCase
       @user.pull_follower_ids
       assert_equal @user.db_object.id, TwitterRelationship.find(@user.follower_relationship_db_ids.first).friend_id
     end
-    
     
   end
   
