@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{pork_sandwich}
-  s.version = "0.4.8"
+  s.version = "0.4.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sam Gilbert", "Evan Burchard"]
-  s.date = %q{2010-02-06}
+  s.date = %q{2010-02-17}
   s.description = %q{Ideal for pulling Twitter search tweets, tweets from a twitter account, twitter account info, twitter relationship data, and trends. All data is stored in a handy schema for easy access.}
   s.email = %q{sam.o.gilbert@gmail.com}
   s.extra_rdoc_files = [
@@ -33,9 +33,11 @@ Gem::Specification.new do |s|
      "lib/pork_sandwich/crawler.rb",
      "lib/pork_sandwich/log.rb",
      "lib/pork_sandwich/puller.rb",
+     "lib/pork_sandwich/random_puller.rb",
      "lib/pork_sandwich/reaction_processor.rb",
      "lib/pork_sandwich/saver.rb",
      "lib/pork_sandwich/search.rb",
+     "lib/pork_sandwich/trend_puller.rb",
      "lib/pork_sandwich/twitter_user.rb"
   ]
   s.homepage = %q{http://github.com/sam1vp/pork_sandwich}
@@ -50,6 +52,7 @@ Gem::Specification.new do |s|
      "test/fakewebs.rb",
      "test/log_test.rb",
      "test/puller_test.rb",
+     "test/random_puller_test.rb",
      "test/reaction_processor_test.rb",
      "test/saver_test.rb",
      "test/schema.rb",
