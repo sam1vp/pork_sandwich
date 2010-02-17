@@ -16,6 +16,9 @@ module Pork
       @search_params.from(@from_user) if @from_user
       begin
         loop do
+          if $PORK_LOG 
+            $PORK_LOG.write("historical pull, query = #{@query}, max_id = #{@search_params.query[:max_id].to_s}")
+          end
           @tweets_pulled = @search_params.dup.fetch.results
           @tweets_pulled.each do |tweet|
             tweet.status_id = tweet.id   
@@ -33,20 +36,30 @@ module Pork
           end
         end
       rescue Twitter::Unavailable
-        p "ERROR: Twitter unavailable, trying in 60"
+        if $PORK_LOG
+           $PORK_LOG.write("ERROR: Twitter unavailable, trying in 60")
+        end
         sleep 60
         retry
       rescue Twitter::NotFound
-        p "ERROR: Info target not found, trying to skip"
+        if $PORK_LOG
+           $PORK_LOG.write("ERROR: Info target not found, trying to skip")
+        end
       rescue Crack::ParseError
-        p "Error: JSON Parsing error, trying to skip past problem tweet"
+        if $PORK_LOG
+           $PORK_LOG.write("Error: JSON Parsing error, trying to skip past problem tweet")
+        end
         @search_params.query[:max_id] -= 1000
       rescue Errno::ETIMEDOUT
-        p "ERROR: Puller timed out, retrying in 10"
+        if $PORK_LOG
+           $PORK_LOG.write("ERROR: Puller timed out, retrying in 10")
+        end
         sleep 10
         retry
       rescue Twitter::InformTwitter
-        p "ERROR: Twitter internal error, retrying in 30"
+        if $PORK_LOG
+           $PORK_LOG.write("ERROR: Twitter internal error, retrying in 30")
+        end
         sleep 30
         retry
 #      rescue NoMethodError

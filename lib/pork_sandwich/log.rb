@@ -4,13 +4,13 @@ module Pork
   
     def initialize(output, options = {})
       @log = Logger.new(output)
-      @log.level = "info"
-      @researcher = options[:researcher] if options[:researcher]
-      @project = options[:project] if options[:project]
+      @log.level = Logger::INFO
+      @researcher =  options[:researcher]? options[:researcher] : ""
+      @project = options[:project]? options[:project] : ""
     end
   
     def write(message)
-      @log.info("#{@project}, #{@researcher}, #{Time.now}: " + message)
+      @log.info("#{@project}, #{@researcher}, #{Time.now.to_s} -- " + message)
     end
   end
 end
