@@ -45,11 +45,13 @@ module Pork
         if $PORK_LOG
            $PORK_LOG.write("ERROR: Info target not found, trying to skip")
         end
+        retry
       rescue Crack::ParseError
         if $PORK_LOG
            $PORK_LOG.write("Error: JSON Parsing error, trying to skip past problem tweet")
         end
         @search_params.query[:max_id] -= 1000
+        retry
       rescue Errno::ETIMEDOUT
         if $PORK_LOG
            $PORK_LOG.write("ERROR: Puller timed out, retrying in 10")
