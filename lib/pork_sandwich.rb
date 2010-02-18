@@ -12,6 +12,9 @@ module Pork
   #Object.send :undef_method, :id
   require 'twitter'
   $SAVER = Pork::Saver.new
+  
+  class RateLimitExceeded < StandardError
+  end
 end
 
 

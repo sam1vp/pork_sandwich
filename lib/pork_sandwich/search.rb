@@ -9,6 +9,7 @@ module Pork
       @from_user = options[:from_user] 
       @db_ids_created = []
       @collect_users = options[:collect_users]
+      @pulls_per_hour = options[:pulls_per_hour]? options[:pulls_per_hour] : 1500
     end
     
     def historical_pull
@@ -16,24 +17,31 @@ module Pork
       @search_params.from(@from_user) if @from_user
       begin
         loop do
+          time_at_start = Time.now
           if $PORK_LOG 
             $PORK_LOG.write("historical pull, query = #{@query}, max_id = #{@search_params.query[:max_id].to_s}")
           end
-          @tweets_pulled = @search_params.dup.fetch.results
+          @return_data = @search_params.dup.fetch
+          if @return_data.error == "You have been rate limited. Enhance your calm."
+            raise Pork::RateLimitExceeded
+          end
+          @tweets_pulled = @return_data.results
           @tweets_pulled.each do |tweet|
             tweet.status_id = tweet.id   
-            @db_ids_created << $SAVER.save(tweet, &TWEET_SAVE).id
+            # @db_ids_created << $SAVER.save(tweet, &TWEET_SAVE).id
             # $CRAWLER.append(tweet.from_user) if @collect_users
             @current_count += 1
             if reached_desired_count? 
               break
             end
           end
+ 
           if reached_desired_count? or @search_params.query[:max_id] == @tweets_pulled.last.id
             break
           else
             @search_params.query[:max_id] = @tweets_pulled.last.id
           end
+          manage_pull_rate(time_at_start)
         end
       rescue Twitter::Unavailable
         if $PORK_LOG
@@ -50,7 +58,8 @@ module Pork
         if $PORK_LOG
            $PORK_LOG.write("Error: JSON Parsing error, trying to skip past problem tweet")
         end
-        @search_params.query[:max_id] -= 1000
+        @search_params.query[:max_id] -= 1000 if @search_params.query[:max_id]
+        manage_pull_rate
         retry
       rescue Errno::ETIMEDOUT
         if $PORK_LOG
@@ -64,10 +73,13 @@ module Pork
         end
         sleep 30
         retry
-#      rescue NoMethodError
-#        p "Rate limited; holding off for a bit then trying again"
-#        sleep 600
-#        retry
+      rescue Pork::RateLimitExceeded
+       if $PORK_LOG
+           $PORK_LOG.write("ERROR: Rate limit exceeded; holding off for a bit then trying again")
+        end
+        sleep 300
+        reduce_pull_rate
+        retry
       end
       return true
     end
@@ -77,6 +89,23 @@ module Pork
         return @current_count >= @desired_count
       else
         return false
+      end
+    end
+    
+    def manage_pull_rate(time_at_start)
+      desired_pause = 1.0 / (@pulls_per_hour / 60.0 / 60.0)
+      pull_duration = Time.now - time_at_start
+      if desired_pause - pull_duration > 0 
+        actual_pause = desired_pause - pull_duration
+      else
+        actual_pause = 0
+      end
+      sleep actual_pause
+    end
+    
+    def reduce_pull_rate
+      if @pulls_per_hour > 100
+        @pulls_per_hour -= 100
       end
     end
     
