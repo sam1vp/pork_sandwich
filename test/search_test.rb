@@ -44,7 +44,16 @@ class SearchTest < Test::Unit::TestCase
         assert_equal 4, @search.current_count
       end
     end
-    
+    context "and since_id = 5624809937" do 
+      setup do 
+        @search = Pork::Search.new('test', {:since_id => 5624809937})
+      end
+      should "be able to do an historical pull for only 2 tweets (because the second tweet id will = 5624809937)" do
+        result = @search.historical_pull
+        assert_equal true, result
+        assert_equal 2, @search.current_count
+      end
+    end
   end
   
 end
