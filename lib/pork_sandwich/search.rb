@@ -6,10 +6,11 @@ module Pork
       @query = query
       @desired_count = options[:desired_count] #if nil, will pull as far back as the Search API allows
       @current_count = 0
+      @since_id = options[:since_id]
       @from_user = options[:from_user] 
       @db_ids_created = []
       @collect_users = options[:collect_users]
-      @pulls_per_hour = options[:pulls_per_hour]? options[:pulls_per_hour] : 1500
+      @pulls_per_hour = options[:pulls_per_hour]? options[:pulls_per_hour] : 2000
     end
     
     def historical_pull
@@ -35,11 +36,13 @@ module Pork
               break
             end
           end
- 
           if reached_desired_count? or @search_params.query[:max_id] == @tweets_pulled.last.id
             break
           else
             @search_params.query[:max_id] = @tweets_pulled.last.id
+          end
+          if reached_since_id?
+            break
           end
           manage_pull_rate(time_at_start)
         end
@@ -106,6 +109,14 @@ module Pork
     def reduce_pull_rate
       if @pulls_per_hour > 100
         @pulls_per_hour -= 100
+      end
+    end
+    
+    def reached_since_id?
+      if @since_id
+        return @search_params.query[:max_id] <= @since_id
+      else
+        return false
       end
     end
     
