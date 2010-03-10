@@ -29,20 +29,17 @@ module Pork
           @tweets_pulled = @return_data.results
           @tweets_pulled.each do |tweet|
             tweet.status_id = tweet.id   
+            if reached_desired_count? or reached_since_id?(tweet.status_id)
+              break
+            end
             @db_ids_created << $SAVER.save(tweet, &TWEET_SAVE).id
             # $CRAWLER.append(tweet.from_user) if @collect_users
             @current_count += 1
-            if reached_desired_count? 
-              break
-            end
           end
-          if reached_desired_count? or @search_params.query[:max_id] == @tweets_pulled.last.id
+          if reached_desired_count? or @search_params.query[:max_id] == @tweets_pulled.last.id or reached_since_id?(@tweets_pulled.last.id)
             break
           else
             @search_params.query[:max_id] = @tweets_pulled.last.id
-          end
-          if reached_since_id?
-            break
           end
           manage_pull_rate(time_at_start)
         end
@@ -112,9 +109,9 @@ module Pork
       end
     end
     
-    def reached_since_id?
+    def reached_since_id?(id)
       if @since_id
-        return @search_params.query[:max_id] <= @since_id
+        return id <= @since_id
       else
         return false
       end
