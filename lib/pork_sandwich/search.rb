@@ -28,7 +28,7 @@ module Pork
           @tweets_pulled = @return_data.results
           @tweets_pulled.each do |tweet|
             tweet.status_id = tweet.id   
-            # @db_ids_created << $SAVER.save(tweet, &TWEET_SAVE).id
+            @db_ids_created << $SAVER.save(tweet, &TWEET_SAVE).id
             # $CRAWLER.append(tweet.from_user) if @collect_users
             @current_count += 1
             if reached_desired_count? 
