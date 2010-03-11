@@ -1,6 +1,6 @@
 module Pork
   class TwitterUser
-    attr_accessor :twitter_id, :twitter_screen_name, :crawled, :user_info, :db_object, :puller, :desired_follower_count, :desired_friend_count
+    attr_accessor :twitter_id, :twitter_screen_name, :crawled, :user_info, :db_object, :puller, :desired_follower_count, :desired_friend_count, :since_tweet_id
     attr_reader :tweet_db_ids, :follower_relationship_db_ids, :friend_relationship_db_ids
   
   
@@ -16,6 +16,7 @@ module Pork
       @friend_relationship_db_ids = nil
       @desired_follower_count = opts[:desired_follower_count]
       @desired_friend_count = opts[:desired_friend_count]
+      @since_tweet_id = opts[:since_tweet_id]
     end
 
     def crawled?

@@ -29,7 +29,6 @@ module Pork
         retry
       end
     end
-
   end
 end
 
@@ -37,7 +36,7 @@ end
 
 
 ACCOUNT_INFO = lambda do |user_object, auth_object|
-  @pull_data = auth_object.user(user_object.search)  
+  @pull_data = Twitter.user(user_object.search)  
   {:pull_data => @pull_data, :db_object => $SAVER.save(@pull_data, &TWITTER_ACCOUNT_SAVE)}
 end
 
@@ -128,6 +127,9 @@ TWEETS = lambda do |user, auth_object|
   @tweet_db_ids = []
   @pull_data = auth_object.user_timeline(rules)
   @pull_data.each do |result|
+    if user.since_tweet_id
+      
+    end
     @tweet_db_ids << $SAVER.save(result, &USER_TWEET_SAVE).id
   end
   # rules[:reactions] ? $REACTION_PROCESSOR.process_reactions(@tweet_db_objects) : nil
