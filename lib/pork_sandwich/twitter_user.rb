@@ -32,7 +32,7 @@ module Pork
     
     def pull_tweets
       pull_result = self.puller.pull(self, &TWEETS)
-      @tweet_db_ids = pull_result[:db_ids]
+      @tweet_db_ids = pull_result[:db_ids] if pull_result
       return true
     end
     
@@ -44,28 +44,28 @@ module Pork
     
     def update_account_info
       pull_result = self.puller.pull(self, &ACCOUNT_INFO)
-      @user_info, @db_object, @twitter_id, @twitter_screen_name = pull_result[:pull_data], pull_result[:db_object], pull_result[:db_object].twitter_id, pull_result[:db_object].screen_name 
+      @user_info, @db_object, @twitter_id, @twitter_screen_name = pull_result[:pull_data], pull_result[:db_object], pull_result[:db_object].twitter_id, pull_result[:db_object].screen_name if pull_result 
       return true
     end
     
     def pull_followers
       pull_result = self.puller.pull(self, &FOLLOWERS)
-      @follower_relationship_db_ids = pull_result[:follower_relationship_db_ids]
+      @follower_relationship_db_ids = pull_result[:follower_relationship_db_ids] if pull_result
     end
     
     def pull_friends
       pull_result = self.puller.pull(self, &FRIENDS)
-      @friend_relationship_db_ids = pull_result[:friend_relationship_db_ids]
+      @friend_relationship_db_ids = pull_result[:friend_relationship_db_ids] if pull_result
     end
     
     def pull_follower_ids
       pull_result = self.puller.pull(self, &FOLLOWER_IDS)
-      @follower_relationship_db_ids = pull_result[:follower_relationship_db_ids]
+      @follower_relationship_db_ids = pull_result[:follower_relationship_db_ids] if pull_result
     end
     
     def pull_friend_ids
       pull_result = self.puller.pull(self, &FRIEND_IDS)
-      @friend_relationship_db_ids = pull_result[:friend_relationship_db_ids]
+      @friend_relationship_db_ids = pull_result[:friend_relationship_db_ids] if pull_result
     end
     
     def puller
