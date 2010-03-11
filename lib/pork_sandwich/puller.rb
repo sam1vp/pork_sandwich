@@ -17,7 +17,6 @@ module Pork
         retry
       rescue Twitter::NotFound
         p "ERROR: Info target not found, trying to skip"
-        return {}
       # rescue Crack::ParseError
       #   raise Crack::ParseError
       rescue Errno::ETIMEDOUT

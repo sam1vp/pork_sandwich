@@ -10,7 +10,7 @@ module Pork
       @crawled = opts[:crawled]
       @user_info = opts[:user_info]
       @db_object = opts[:db_object]
-      @puller = nil
+      @puller = opts[:puller]
       @tweet_db_ids = nil
       @follower_relationship_db_ids = nil
       @friend_relationship_db_ids = nil
