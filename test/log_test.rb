@@ -16,8 +16,8 @@ class LogTest < Test::Unit::TestCase
       File.open('testlog.txt','r').each do |line|
         log_string << line
       end
-      assert log_string.include? ("testing123")
-      assert log_string.include? ("Project, Researcher")
+      assert log_string.include?("testing123")
+      assert log_string.include?("Project, Researcher")
     end
     
     teardown do 
