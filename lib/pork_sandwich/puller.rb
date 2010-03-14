@@ -144,9 +144,13 @@ TWEETS = lambda do |user, auth_object|
   loop do 
     @pull_data = auth_object ? auth_object.user_timeline(rules.merge(@id_hash)) : Twitter.timeline(@id,rules)
     @pull_data.each do |result|
-      @tweet_db_ids << $SAVER.save(result, &USER_TWEET_SAVE).id
+      if (user.since_tweet_id ? @pull_data.last.id <= user.since_tweet_id : false)
+        break
+      else
+        @tweet_db_ids << $SAVER.save(result, &USER_TWEET_SAVE).id
+      end
     end
-    if @pull_data.last.id == rules[:max_id]
+    if @pull_data.last.id == rules[:max_id] or (user.since_tweet_id ? @pull_data.last.id <= user.since_tweet_id : false )
       break
     else
       rules[:max_id] = @pull_data.last.id
