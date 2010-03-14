@@ -1,21 +1,182 @@
 --README--
 
-How to get started: 
+Integrating pork_sandwich into your rails project: 
 
-1. Create a new rails project
 
-2. Drop this into config/environment.rb (after the Rails::Initializer.run do |config| line, but before the "end" statement of that block)
-  config.gem "pork_sandwich", :version => ">=0.4.5"
+1. Drop this into config/environment.rb (after the Rails::Initializer.run do |config| line, but before the "end" statement of that block):
 
-3. rake gems:install 
-or
-sudo rake gems:install
+  config.gem "pork_sandwich", :version => ">=0.4.17"
 
-4. script/generate pork_sandwich_models
+3. Make sure pork_sandwich is installed by running: 
 
-5. script/generate pork_sandwich_migration
+     rake gems:install 
 
-6. rake db:migrate
-(may have to comment the "with timestamp" stuff out in the migration.  Starts with "begin" and has a lot of execute statements in it.)
+4. create the pork_sandwich models: 
 
-Pork Classes and db Objects can now be referenced throughout your project. Happy porking.
+	script/generate pork_sandwich_models 
+
+5. create the pork_sandwich db migration:
+ 	
+	script/generate pork_sandwich_migration
+
+6. run:
+
+	rake db:migrate
+
+Pork Classes and Database Objects can now be referenced throughout your project. Happy porking.
+
+
+
+___________________________________________
+
+
+Class:  Search
+Used for collecting and storing tweets that match a given search term 
+
+Search moves backwards through twitter's search API, asking twitter for tweets from most recent to oldest. Without other stop conditions set, an historical pull will continue until the method collects all that is currently available from Twitter. Twitter's search API makes available tweets created as long as ~6 days ago. 
+
+Pork::Search.new(query, {options})
+
+query: a string representing the search you want to run. One or more words separated by spaces will be treated as AND terms, not as a phrase. Putting a - before a word will search for tweets that do not contain that word. Terms are case insensitive. 
+
+:desired_count => specifies the number of tweets to collect, written as an integer, provided that that many tweets available from Twitter. 
+:since_id => specifies the tweet status_id, written as an integer, at which to stop collecting
+:from_user => specifies the username (as string) or user_id (as integer) of a twitter user who's timeline you would like to search
+:pulls_per_hour => specifies the rate at which to make API calls. Default = 1500, which is recommended for non-whitelisted IPs
+
+
+Methods: 
+
+.historical_pull
+
+Executes a search based on the search parameters specified by Search instance. Returns true when complete. 
+
+.current_count
+
+returns the number of tweets collected thus far
+
+.desired_count
+
+read or set the desired count
+
+.from_user
+
+read or set the from user
+
+.since_id
+
+read or set the status id at which to stop collecting
+
+.pulls_per_hour
+
+read or set number of pulls per hour
+
+.db_ids_created
+
+returns an array of the database id numbers of the tweets that have been saved into the database by this search.
+
+Examples:
+
+# Pulls all tweets from twitter's search API that mention pork:
+search = Pork::Search.new('pork')
+search.historical_pull
+
+# Pull all tweets with a status id higher than 950463847 from twitter's search API that mention smokey AND tender: 
+search = Pork::Search.new('smokey+tender')
+search.since_id = 950463847
+search.historical_pull
+
+# Pull up to 150 tweets created by user 'sam1vp' from twitter's search API that mention 'bbq': 
+search = Pork::Search.new('bbq', {:from_user => 'sam1vp', :desired_count => 150})
+search.historical_pull
+
+
+___________________________________________
+
+Class: TwitterUser
+Used for collecting data about a given twitter user
+
+TwitterUser.new({options})
+
+:twitter_id => status id of the user you wish to gather info about
+:twitter_screen_name => string of the screen name of the user you wish to gather info about
+:desired_follower_count => max number of followers you want to pull and save
+:desired_friend_count => max number of friends you want to pull and save
+:since_tweet_id => tweet status id at which to stop collecting this user's tweets
+
+
+Methods: 
+
+.pull_tweets
+
+pulls and stores tweets from a user's timeline. If no stop conditions have been set, this will pull as many tweets as twitter makes available, usually up to ~2000 tweets.
+
+.pull_account_info
+
+pulls and stores this user's account info only if it's not already in the database.
+
+.update_account_info
+
+pulls and stores this user's account info, overwriting any existing info in the database
+
+.pull_friends
+
+pulls and stores account info for 100 friends per call, cursoring through a user's friends until a desired count has been reached or all friends have been pulled. This method also stores a row in the twitter_relationships table for each friend. 
+
+.pull_followers
+
+pulls and stores account info for 100 followers per call, cursoring through a user's followers until a desired count has been reached or all followers have been pulled. This method also stores a row in the twitter_relationships table for each follower. 
+
+.pull_friend_ids
+
+pulls an array of all the ids of this user's friends in one call, creating 'shell' rows in the twitter_accounts table and rows in the twitter_relationships table. Ideal for quickly harvesting relationship data.  
+
+.pull_follower_ids
+
+pulls an array of all the ids of this user's followers in one call, creating 'shell' rows in the twitter_accounts table and rows in the twitter_relationships table. Ideal for quickly harvesting relationship data.  
+
+___________________________________________
+
+Class: Saver
+
+Saver, which handles database insertions, is automatically instantiated when needed and referenced by $SAVER. You only need to interact with it if you want to tag tweets, account data, or relationship data via the acts_as_taggable activerecord extension. To tag data stored by a given Search or TwitterUser instance, after creating that instance, write: 
+
+$Saver.rules = {'tags' => {'tag' => foo, 'tag' => bar}} 
+
+___________________________________________
+
+Class: Log
+
+Search and TwitterUser are designed to output both standard and error handling messages to a log file to help document the data collection process. In order to take advantage of these logging features, you must create a globally accessible logger: 
+
+$PORK_LOG = Pork::Log.new(log [, options])
+
+log: the place to which logger should write. accepts STDOUT, STDERR, or a string specifying the relative path of a log file, which will be either created or updated. 
+
+options
+:researcher => appends a researcher name to the start of any log message
+:project => appends a project name to the start of any log message
+
+
+Methods: 
+
+.write(string)
+
+use this method on $PORK_LOG to add your own messages to the log
+
+___________________________________________
+
+Expected Changes: 
+
+- A reaction processor, which can be used to search for and store tweets that either mention, reply to, retweet, or are mentioned by, replied by, or retweeted by a given user
+- New database structures and methods for tracking search terms or user_timelines over time
+- New database structures and methods for 'crawling,' i.e. traversing the twitter relationship graph. This will make it possible to do things like pull all tweets from a user, his followers, and his follower's followers. 
+- Optional batch insertion, which will greatly speed up the rate at which data is stored. This will likely limit the gem to projects that user either MySQL or Postgres, and may preclude the use of various active_record association methods. 
+
+
+
+
+
+
+
+

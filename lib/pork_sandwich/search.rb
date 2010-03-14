@@ -1,5 +1,6 @@
 module Pork
   class Search
+    attr_accessor :desired_count, :from_user, :since_id, :pulls_per_hour
     attr_reader :query, :db_ids_created, :desired_count, :from_user, :current_count
   
     def initialize(query, options = {})
@@ -10,7 +11,7 @@ module Pork
       @from_user = options[:from_user] 
       @db_ids_created = []
       @collect_users = options[:collect_users]
-      @pulls_per_hour = options[:pulls_per_hour]? options[:pulls_per_hour] : 2000
+      @pulls_per_hour = options[:pulls_per_hour]? options[:pulls_per_hour] : 1500
     end
     
     def historical_pull
