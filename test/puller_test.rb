@@ -37,8 +37,10 @@ class PullerTest < Test::Unit::TestCase
          end
 
          should "be able to pull tweets from a user's timeline for a given user" do
+           Tweet.delete_all
+           @initial_size = Tweet.all.size
            @pull_hash = @p.pull(@test_user, &TWEETS)
-           assert_equal 5590958294, Tweet.find(@pull_hash[:db_ids].first).status_id
+           assert_equal @initial_size + 6, Tweet.all.size
          end
 
 
@@ -81,8 +83,10 @@ class PullerTest < Test::Unit::TestCase
          end
 
          should "be able to pull tweets from a user's timeline for a given user" do
+           Tweet.delete_all
+           @initial_size = Tweet.all.size
            @pull_hash = @p.pull(@test_user, &TWEETS)
-           assert_equal 5590958294, Tweet.find(@pull_hash[:db_ids].first).status_id
+           assert_equal @initial_size + 6, Tweet.all.size
          end
 
 

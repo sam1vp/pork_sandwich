@@ -141,9 +141,16 @@ TWEETS = lambda do |user, auth_object|
     @id_hash = {"screen_name" => @id}
   end
   @tweet_db_ids = []
-  @pull_data = auth_object ? auth_object.user_timeline(rules.merge(@id_hash)) : Twitter.timeline(@id,rules)
-  @pull_data.each do |result|
-    @tweet_db_ids << $SAVER.save(result, &USER_TWEET_SAVE).id
+  loop do 
+    @pull_data = auth_object ? auth_object.user_timeline(rules.merge(@id_hash)) : Twitter.timeline(@id,rules)
+    @pull_data.each do |result|
+      @tweet_db_ids << $SAVER.save(result, &USER_TWEET_SAVE).id
+    end
+    if @pull_data.last.id == rules[:max_id]
+      break
+    else
+      rules[:max_id] = @pull_data.last.id
+    end
   end
   # rules[:reactions] ? $REACTION_PROCESSOR.process_reactions(@tweet_db_objects) : nil
   {:db_ids => @tweet_db_ids}
