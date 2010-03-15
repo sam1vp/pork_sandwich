@@ -38,6 +38,7 @@ end
 
 
 ACCOUNT_INFO = lambda do |user_object, auth_object|
+  $PORK_LOG.write("Pulling User Account info for user: #{user_object.search}") if $PORK_LOG
   @pull_data = auth_object ? auth_object.user(user_object.search) : Twitter.user(user_object.search)  
   {:pull_data => @pull_data, :db_object => $SAVER.save(@pull_data, &TWITTER_ACCOUNT_SAVE)}
 end
