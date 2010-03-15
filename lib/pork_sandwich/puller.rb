@@ -11,22 +11,22 @@ module Pork
       begin
         pull_type.call(@user, @auth_object)
       rescue Errno::ECONNRESET   
-        p "ERROR: Connection reset by peer, probably because you tried to access an unauthorized page. Moving on."  
+        $PORK_LOG.write("ERROR: Connection reset by peer, probably because you tried to access an unauthorized page. Moving on.") if $PORK_LOG  
       rescue Twitter::Unavailable
-        p "ERROR: Twitter unavailable, trying in 60"
+        $PORK_LOG.write("ERROR: Twitter unavailable, trying in 60") if $PORK_LOG
         sleep 60
         retry
       rescue Twitter::NotFound
-        p "ERROR: Info target not found, trying to skip"
+        $PORK_LOG.write("ERROR: Info target not found, trying to skip") if $PORK_LOG
       # rescue Twitter::Unauthorized 
       # rescue Crack::ParseError
       #   raise Crack::ParseError
       rescue Errno::ETIMEDOUT
-        p "ERROR: Puller timed out, retrying in 10"
+        $PORK_LOG.write("ERROR: Puller timed out, retrying in 10") if $PORK_LOG
         sleep 10
         retry
       rescue Twitter::InformTwitter
-        p "ERROR: Twitter internal error, retrying in 30"
+        $PORK_LOG.write("ERROR: Twitter internal error, retrying in 30") if $PORK_LOG
         sleep 30
         retry
       end
