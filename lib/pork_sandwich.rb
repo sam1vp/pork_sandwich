@@ -8,7 +8,6 @@ require "#{File.dirname(__FILE__)}/pork_sandwich/log"
 require "#{File.dirname(__FILE__)}/pork_sandwich/search"
 
 
-
 module Pork 
   #Object.send :undef_method, :id
   require 'twitter'
