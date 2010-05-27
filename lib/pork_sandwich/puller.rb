@@ -34,6 +34,12 @@ module Pork
         $PORK_LOG.write("ERROR: Twitter internal error, retrying in 30") if $PORK_LOG
         sleep 30
         retry
+      rescue Timeout::Error
+        if $PORK_LOG
+          $PORK_LOG.write("ERROR: Request Timed out. Retrying in 30")
+        end
+        sleep 30 
+        retry
       end
     end
   end

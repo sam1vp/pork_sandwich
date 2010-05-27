@@ -81,6 +81,12 @@ module Pork
         sleep 300
         reduce_pull_rate
         retry
+      rescue Timeout::Error
+        if $PORK_LOG
+          $PORK_LOG.write("ERROR: Request Timed out. Retrying in 30")
+        end
+        sleep 30 
+        retry
       end
       return true
     end
