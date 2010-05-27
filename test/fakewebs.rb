@@ -6,6 +6,9 @@ auth_and_no_auth = [http_auth_string, ""]
 
 FakeWeb.allow_net_connect = false
 
+
+FakeWeb.register_uri(:any, "http://twitter.com/account/rate_limit_status.json", :body => "{\"reset_time\":\"Thu May 27 03:27:00 +0000 2010\",\"remaining_hits\":9001,\"hourly_limit\":150,\"reset_time_in_seconds\":1274930820}")
+
 # SEARCH METHOD 
 FakeWeb.register_uri(:any, "http://search.twitter.com/search.json?rpp=100&q=test", :body => '{"results":[{"profile_image_url":"http://a3.twimg.com/profile_images/521281029/DSC01483_-_Kopia_-_Kopia_normal.JPG","created_at":"Wed, 11 Nov 2009 17:52:11 +0000","from_user":"SamIsMarth","to_user_id":10186853,"text":"@sage2526 cool. I have to study to my german test... Have a nice evening ^^","id":5624810553,"from_user_id":72123474,"to_user":"sage2526","geo":null,"iso_language_code":"en","source":"&lt;a href=&quot;http://twitter.com/&quot;&gt;web&lt;/a&gt;"},{"profile_image_url":"http://a3.twimg.com/profile_images/56115537/Andrew_-_small_normal.jpg","created_at":"Wed, 11 Nov 2009 17:52:09 +0000","from_user":"MarthIsGreat","to_user_id":null,"text":"Gearing up yo fail this calculus III test. Wish me luck!","id":5624809937,"from_user_id":842449,"geo":null,"iso_language_code":"en","source":"&lt;a href=&quot;http://help.twitter.com/index.php?pg=kb.page&amp;id=75&quot; rel=&quot;nofollow&quot;&gt;txt&lt;/a&gt;"}],"max_id":5624810553,"since_id":0,"refresh_url":"?since_id=5624810553&q=test","next_page":"?page=2&max_id=5624810553&q=test","results_per_page":15,"page":1,"completed_in":0.040758,"query":"test"}')
 

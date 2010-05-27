@@ -2,9 +2,13 @@ module Pork
   class Puller
     attr_accessor :auth_object
     
-    def self.rate
+    def self.rate_check
         rate_hash = JSON.parse(Net::HTTP.get(URI.parse("http://twitter.com/account/rate_limit_status.json")))
-        return rate_hash["remaining_hits"]
+        if rate_hash["remaining_hits"] == 0
+          $PORK_LOG.write("You've hit your rate limit, sleeping for 2 mins then checking the rate limit again. Should reset at #{rate_hash['reset_time']}") if $PORK_LOG
+          sleep 120    
+          Pork::Puller.rate_check    
+        end
     end
     
     def initialize(auth_object = nil)
@@ -12,6 +16,7 @@ module Pork
     end
   
     def pull(user_object, &pull_type)
+      Pork::Puller.rate_check
       @user = user_object
       begin
         pull_type.call(@user, @auth_object)
