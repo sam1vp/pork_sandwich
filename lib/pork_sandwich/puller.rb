@@ -154,7 +154,7 @@ TWEETS = lambda do |user, auth_object|
     @id = user.twitter_id
     @id_hash = {"user_id" => @id}
   else
-    @id = user.screen_name
+    @id = user.twitter_screen_name
     @id_hash = {"screen_name" => @id}
   end
   @tweet_db_ids = []
