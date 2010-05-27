@@ -2,6 +2,11 @@ module Pork
   class Puller
     attr_accessor :auth_object
     
+    def self.rate
+        rate_hash = JSON.parse(Net::HTTP.get(URI.parse("http://twitter.com/account/rate_limit_status.json")))
+        return rate_hash["remaining_hits"]
+    end
+    
     def initialize(auth_object = nil)
       @auth_object = auth_object ? auth_object.auth : auth_object
     end
