@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{pork_sandwich}
-  s.version = "0.4.22"
+  s.version = "0.4.23"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sam Gilbert", "Evan Burchard"]
-  s.date = %q{2010-05-26}
+  s.date = %q{2010-05-29}
   s.description = %q{Ideal for pulling Twitter search tweets, tweets from a twitter account, twitter account info, twitter relationship data, and trends. All data is stored in a handy schema for easy access.}
   s.email = %q{sam.o.gilbert@gmail.com}
   s.extra_rdoc_files = [
