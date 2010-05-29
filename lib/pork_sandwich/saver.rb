@@ -125,9 +125,9 @@ TWITTER_ACCOUNT_SAVE = lambda do |twitter_account_to_save, rules|
         twitter_account.tag_list << tag_value
       end
     end
-     twitter_account.save
   end                    
   
+  twitter_account.save
   twitter_account
 
 end
